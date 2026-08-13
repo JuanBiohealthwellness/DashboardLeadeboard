@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mikasa Hospitality Group</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* MAIN PAGE STYLES */
+        .main-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            gap: 60px;
+        }
+
+        .main-page.hidden {
+            display: none;
+        }
+
+        .logo-section {
+            text-align: center;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        .logo-svg {
+            width: 120px;
+            height: 120px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 10px 30px rgba(255,255,255,0.1));
+        }
+
+        .brand-name {
+            color: white;
+            font-size: 48px;
+            font-weight: 800;
+            letter-spacing: 3px;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .brand-subtitle {
+            color: #aaa;
+            font-size: 14px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .buttons-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            width: 100%;
+            max-width: 900px;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .main-btn {
+            aspect-ratio: 1;
+            border: none;
+            border-radius: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .main-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            transition: left 0.5s;
+            z-index: -1;
+        }
+
+        .main-btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-mikasa {
+            background: linear-gradient(135deg, #000 0%, #1a1a1a 100%);
+            color: white;
+            border: 2px solid #444;
+        }
+
+        .btn-mikasa:hover {
+            transform: translateY(-8px);
+            border-color: white;
+            box-shadow: 0 30px 60px rgba(255,255,255,0.1);
+        }
+
+        .btn-bio {
+            background: linear-gradient(135deg, #2d5f4f 0%, #1a3a2e 100%);
+            color: white;
+            border: 2px solid #4a8070;
+        }
+
+        .btn-bio:hover {
+            transform: translateY(-8px);
+            border-color: white;
+            box-shadow: 0 30px 60px rgba(45,211,176,0.2);
+        }
+
+        .btn-icon {
+            font-size: 48px;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .main-btn:hover .btn-icon {
+            opacity: 1;
+        }
+
+        .btn-text {
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* APP PAGE STYLES */
+        .app-page {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #f5f5f5;
+        }
+
+        .app-page.active {
+            display: flex;
+        }
+
+        .header {
+            background: white;
+            border-bottom: 2px solid #000;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+
+        .header-left:hover {
+            opacity: 0.8;
+        }
+
+        .header-logo {
+            width: 50px;
+            height: 50px;
+        }
+
+        .header-title h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .back-btn {
+            padding: 10px 20px;
+            border: 2px solid #000;
+            background: white;
+            color: #000;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 13px;
+            transition: all 0.3s;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .back-btn:hover {
+            background: #000;
+            color: white;
+            transform: translateX(-4px);
+        }
+
+        .container {
+            flex: 1;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 40px 20px;
+        }
+
+        .content-box {
+            background: white;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .page-title {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 30px;
+            letter-spacing: 0.5px;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #f9f9f9 0%, #f0f0f0 100%);
+            border: 1px solid #e0e0e0;
+            padding: 24px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-color: #000;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .metric-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: #000;
+            line-height: 1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        thead {
+            background: #000;
+            color: white;
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        tbody tr {
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #f9f9f9;
+        }
+
+        .rank-cell {
+            font-weight: 800;
+            color: #000;
+            font-size: 16px;
+            width: 40px;
+        }
+
+        .rank-cell.top3 {
+            color: #d4af37;
+            font-size: 18px;
+        }
+
+        .section-subtitle {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: #666;
+        }
+
+        /* ANIMATIONS */
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .app-page.active {
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .buttons-container {
+                gap: 20px;
+            }
+
+            .main-btn {
+                aspect-ratio: auto;
+                min-height: 200px;
+            }
+
+            .brand-name {
+                font-size: 36px;
+            }
+
+            .btn-text {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .main-page {
+                gap: 40px;
+            }
+
+            .buttons-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .brand-name {
+                font-size: 28px;
+                letter-spacing: 2px;
+            }
+
+            .logo-svg {
+                width: 80px;
+                height: 80px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .content-box {
+                padding: 20px;
+            }
+
+            .page-title {
+                font-size: 24px;
+            }
+
+            .data-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 10px;
+            }
+
+            .metric-value {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- MAIN PAGE -->
+    <div class="main-page" id="mainPage">
+        <div class="logo-section">
+            <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="100" cy="100" r="90" fill="none" stroke="white" stroke-width="14"/>
+                <text x="100" y="125" font-size="80" font-weight="900" text-anchor="middle" fill="white" font-family="Arial, sans-serif">MG</text>
+            </svg>
+            <h1 class="brand-name">MIKASA</h1>
+            <p class="brand-subtitle">Hospitality Group</p>
+        </div>
+
+        <div class="buttons-container">
+            <button class="main-btn btn-mikasa" onclick="navigateTo('dashboard')">
+                <span class="btn-icon">📊</span>
+                <span class="btn-text">Mikasa<br>Hospitality Group</span>
+            </button>
+            <button class="main-btn btn-bio" onclick="navigateTo('leaderboard')">
+                <span class="btn-icon">🏥</span>
+                <span class="btn-text">Biohealthwellness</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- DASHBOARD PAGE (Mikasa Hospitality Group) -->
+    <div class="app-page" id="dashboardPage">
+        <div class="header">
+            <div class="header-left" onclick="goHome()">
+                <svg class="header-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="90" fill="none" stroke="#000" stroke-width="12"/>
+                    <text x="100" y="125" font-size="70" font-weight="900" text-anchor="middle" fill="#000">MG</text>
+                </svg>
+                <div class="header-title">
+                    <h1>MIKASA</h1>
+                </div>
+            </div>
+            <button class="back-btn" onclick="goHome()">← Volver</button>
+        </div>
+
+        <div class="container">
+            <div class="content-box">
+                <h2 class="page-title">Mikasa Hospitality Group</h2>
+
+                <div class="data-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Propiedades Activas</div>
+                        <div class="metric-value">24</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Ocupación Promedio</div>
+                        <div class="metric-value">87%</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Ingresos Mensuales</div>
+                        <div class="metric-value">$2.4M</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Huéspedes Satisfechos</div>
+                        <div class="metric-value">94%</div>
+                    </div>
+                </div>
+
+                <p class="section-subtitle">Desempeño por Propiedad</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Propiedad</th>
+                            <th>Ubicación</th>
+                            <th style="text-align: right;">Ocupación</th>
+                            <th style="text-align: right;">Rating</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="rank-cell">1</td>
+                            <td><strong>Grand Plaza Resort</strong></td>
+                            <td>Cancún, MX</td>
+                            <td style="text-align: right;">95%</td>
+                            <td style="text-align: right;">⭐ 4.9</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-cell">2</td>
+                            <td><strong>Beach Elegance Hotel</strong></td>
+                            <td>Playa del Carmen</td>
+                            <td style="text-align: right;">92%</td>
+                            <td style="text-align: right;">⭐ 4.8</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-cell">3</td>
+                            <td><strong>Mountain View Lodge</strong></td>
+                            <td>Oaxaca, MX</td>
+                            <td style="text-align: right;">88%</td>
+                            <td style="text-align: right;">⭐ 4.7</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-cell">4</td>
+                            <td><strong>Urban Boutique</strong></td>
+                            <td>CDMX, MX</td>
+                            <td style="text-align: right;">85%</td>
+                            <td style="text-align: right;">⭐ 4.6</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-cell">5</td>
+                            <td><strong>Colonial Paradise</strong></td>
+                            <td>Guanajuato, MX</td>
+                            <td style="text-align: right;">79%</td>
+                            <td style="text-align: right;">⭐ 4.5</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-cell">6</td>
+                            <td><strong>Sunset Bay Resort</strong></td>
+                            <td>Puerto Vallarta</td>
+                            <td style="text-align: right;">83%</td>
+                            <td style="text-align: right;">⭐ 4.7</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- LEADERBOARD PAGE (Biohealthwellness) -->
+    <div class="app-page" id="leaderboardPage">
+        <div class="header">
+            <div class="header-left" onclick="goHome()">
+                <svg class="header-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="90" fill="none" stroke="#000" stroke-width="12"/>
+                    <text x="100" y="125" font-size="70" font-weight="900" text-anchor="middle" fill="#000">MG</text>
+                </svg>
+                <div class="header-title">
+                    <h1>BIOHEALTHWELLNESS</h1>
+                </div>
+            </div>
+            <button class="back-btn" onclick="goHome()">← Volver</button>
+        </div>
+
+        <div class="container">
+            <div class="content-box">
+                <h2 class="page-title">Dylan's Team Leaderboard - July 2026</h2>
+
+                <div class="data-grid">
+                    <div class="metric-card">
+                        <div class="metric-label">Miembros del Equipo</div>
+                        <div class="metric-value">8</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Puntuación Total</div>
+                        <div class="metric-value">7,845</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Promedio por Miembro</div>
+                        <div class="metric-value">980</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-label">Actividad</div>
+                        <div class="metric-value">100%</div>
+                    </div>
+                </div>
+
+                <p class="section-subtitle">Ranking del Equipo</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Rol</th>
+                            <th style="text-align: right;">Puntuación</th>
+                            <th style="text-align: right;">Logros</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="rank-cell top3">🥇</td>
+                            <td><strong>Dylan</strong></td>
+                            <td>Team Lead</td>
+                            <td style="text-align: right;">1,250</td>
+                            <td style="text-align: right;">15</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-cell top3">🥈</td>
+                            <td><strong>María González</strong></td>
+                            <td>Manager</td>
+                            <td style="text-align: right;">1,180</td>
+                            <td style="text-align: right;">13</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-cell top3">🥉</td>
+                            <td><strong>Carlos Méndez</strong></td>
+                            <td>Coordinador</td>
+                            <td style="text-align: right;">1,145</td>
+                            <td style="text-align: right;">12</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-cell">4</td>
+                            <td><strong>Laura Fernández</strong></td>
+                            <td>Especialista</td>
+                            <td style="text-align: right;">1,080</td>
+                            <td style="text-align: right;">11</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-cell">5</td>
+                            <td><strong>Jorge Ramírez</strong></td>
+                            <td>Analista</td>
+                            <td style="text-align: right;">1,020</td>
+                            <td style="text-align: right;">10</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-cell">6</td>
+                            <td><strong>Patricia Ruiz</strong></td>
+                            <td>Asistente</td>
+                            <td style="text-align: right;">945</td>
+                            <td style="text-align: right;">8</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-cell">7</td>
+                            <td><strong>Roberto López</strong></td>
+                            <td>Técnico</td>
+                            <td style="text-align: right;">890</td>
+                            <td style="text-align: right;">7</td>
+                        </tr>
+                        <tr>
+                            <td class="rank-cell">8</td>
+                            <td><strong>Sofía Martínez</strong></td>
+                            <td>Ejecutivo</td>
+                            <td style="text-align: right;">735</td>
+                            <td style="text-align: right;">6</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function navigateTo(page) {
+            const mainPage = document.getElementById('mainPage');
+            const dashboardPage = document.getElementById('dashboardPage');
+            const leaderboardPage = document.getElementById('leaderboardPage');
+
+            mainPage.classList.add('hidden');
+            dashboardPage.classList.remove('active');
+            leaderboardPage.classList.remove('active');
+
+            if (page === 'dashboard') {
+                dashboardPage.classList.add('active');
+            } else if (page === 'leaderboard') {
+                leaderboardPage.classList.add('active');
+            }
+        }
+
+        function goHome() {
+            const mainPage = document.getElementById('mainPage');
+            const dashboardPage = document.getElementById('dashboardPage');
+            const leaderboardPage = document.getElementById('leaderboardPage');
+
+            mainPage.classList.remove('hidden');
+            dashboardPage.classList.remove('active');
+            leaderboardPage.classList.remove('active');
+        }
+    </script>
+
+</body>
+</html>
